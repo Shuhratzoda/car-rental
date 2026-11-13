@@ -1,0 +1,87 @@
+﻿@startuml
+skinparam classAttributeIconSize 0
+title car_rental: Диаграмма классов предметной области
+
+enum UserRole {
+  client
+  manager
+  admin
+}
+
+enum CarStatus {
+  active
+  inactive
+}
+
+enum BookingStatus {
+  pending
+  approved
+  rejected
+  issued
+  returned
+  cancelled
+}
+
+class User {
+  - id: int
+  - fullName: string
+  - email: string
+  - phone: string [0..1]
+  - password: string
+  - role: UserRole
+  - createdAt: datetime
+  + verifyPassword(plain: string): bool
+}
+
+class Tariff {
+  - id: int
+  - name: string
+  - kmPerDay: int
+  - extraKmPrice: decimal
+  + calcExtraCost(days: int, kmDriven: int): decimal
+}
+
+class Car {
+  - id: int
+  - brand: string
+  - model: string
+  - year: int
+  - image: string [0..1]
+  - priceDay: decimal
+  - odometer: int
+  - status: CarStatus
+  + updateOdometer(newOdometer: int): void
+}
+
+class Booking {
+  - id: int
+  - dateStart: date
+  - dateEnd: date
+  - totalEst: decimal
+  - status: BookingStatus
+  - createdAt: datetime
+  + approve(): void
+  + reject(): void
+  + cancel(): void
+}
+
+class Rental {
+  - id: int
+  - odometerStart: int
+  - odometerEnd: int [0..1]
+  - issuedAt: datetime
+  - returnedAt: datetime [0..1]
+  - days: int [0..1]
+  - kmDriven: int [0..1]
+  - baseCost: decimal [0..1]
+  - extraCost: decimal [0..1]
+  - total: decimal [0..1]
+  + completeReturn(odometerEnd: int, tariff: Tariff, priceDay: decimal): void
+}
+
+Tariff "1" -- "0..*" Car : определяет условия >
+User "1" -- "0..*" Booking : оформляет >
+Car "1" -- "0..*" Booking : бронируется в >
+Booking "1" *-- "0..1" Rental : переходит в аренду >
+User "1" -- "0..*" Rental : оформляет выдачу/приём >
+@enduml

@@ -1,0 +1,64 @@
+﻿@startuml
+skinparam linetype ortho
+title car_rental: ER-диаграмма логической модели
+
+entity users {
+  * id : INT <<PK>>
+  --
+  * full_name : VARCHAR(120)
+  * email : VARCHAR(120) <<UQ>>
+  phone : VARCHAR(30)
+  * password : VARCHAR(255)
+  * role : ENUM
+}
+
+entity tariffs {
+  * id : INT <<PK>>
+  --
+  * name : VARCHAR(60)
+  * km_per_day : INT
+  * extra_km_price : DECIMAL
+}
+
+entity cars {
+  * id : INT <<PK>>
+  --
+  * brand : VARCHAR(50)
+  * model : VARCHAR(50)
+  * year : YEAR
+  image : VARCHAR(255)
+  * price_day : DECIMAL
+  * tariff_id : INT <<FK>>
+  * odometer : INT
+  * status : ENUM
+}
+
+entity bookings {
+  * id : INT <<PK>>
+  --
+  * user_id : INT <<FK>>
+  * car_id : INT <<FK>>
+  * date_start : DATE
+  * date_end : DATE
+  * total_est : DECIMAL
+  * status : ENUM
+}
+
+entity rentals {
+  * id : INT <<PK>>
+  --
+  * booking_id : INT <<FK, UQ>>
+  * manager_id : INT <<FK>>
+  * odometer_start : INT
+  odometer_end : INT
+  issued_at : DATETIME
+  returned_at : DATETIME
+  total : DECIMAL
+}
+
+tariffs ||--o{ cars : "tariff_id"
+users ||--o{ bookings : "user_id"
+cars ||--o{ bookings : "car_id"
+bookings ||--|| rentals : "booking_id"
+users ||--o{ rentals : "manager_id"
+@enduml

@@ -1,0 +1,39 @@
+﻿@startuml
+left to right direction
+skinparam packageStyle rectangle
+title car_rental: Диаграмма вариантов использования (Use Case)
+
+actor "Клиент\n(client)" as Client
+actor "Менеджер\n(manager)" as Manager
+actor "Администратор\n(admin)" as Admin
+
+rectangle "Система проката автомобилей (car_rental)" {
+  usecase "Просмотреть каталог авто" as UC1
+  usecase "Отфильтровать авто по параметрам" as UC2
+  usecase "Оформить бронирование" as UC3
+  usecase "Проверить пересечение дат\nи рассчитать total_est" as UC4
+  usecase "Отменить бронирование" as UC5
+  usecase "Подтвердить / отклонить бронь" as UC6
+  usecase "Оформить выдачу автомобиля" as UC7
+  usecase "Принять возврат автомобиля\nи рассчитать перепробег" as UC8
+  usecase "Управлять автомобилями (CRUD)" as UC9
+  usecase "Управлять тарифами (CRUD)" as UC10
+  usecase "Управлять пользователями" as UC11
+}
+
+Client --> UC1
+Client --> UC3
+Client --> UC5
+
+Manager --> UC1
+Manager --> UC6
+Manager --> UC7
+Manager --> UC8
+
+Admin --> UC9
+Admin --> UC10
+Admin --> UC11
+
+UC2 ..> UC1 : <<extend>>
+UC3 ..> UC4 : <<include>>
+@enduml

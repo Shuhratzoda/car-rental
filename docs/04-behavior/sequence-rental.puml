@@ -1,0 +1,38 @@
+﻿@startuml
+title Диаграмма последовательности: Возврат автомобиля и расчёт перепробега
+autonumber
+
+actor "Менеджер\n(manager)" as Manager
+participant "Браузер" as B
+participant "index.php\n+ Router" as R
+participant "RentalController" as C
+participant "RentalRepository" as Repo
+database "MySQL\ncar_rental" as DB
+
+Manager -> B: Вводит odometer_end и нажимает «Принять возврат»
+B -> R: POST /rentals/12/return (odometer_end, csrf_token)
+R -> C: returnCar(12)
+activate C
+
+C -> C: Проверить роль manager и CSRF-токен
+C -> Repo: findActiveRentalWithTariff(12)
+Repo -> DB: SELECT r.*, b.date_start, b.date_end, c.price_day, t.km_per_day, t.extra_km_price\nFROM rentals r JOIN bookings b ... JOIN cars c ... JOIN tariffs t ...\nWHERE r.id = ?
+DB --> Repo: данные аренды, авто и тарифа
+Repo --> C: объект аренды (status = issued)
+
+alt статус issued и odometer_end >= odometer_start
+  C -> C: Рассчитать days, km_driven, base_cost, extra_cost, total
+  C -> Repo: completeReturn(12, odometer_end, calculations)
+  Repo -> DB: UPDATE rentals SET odometer_end=?, returned_at=NOW(), total=? WHERE id=?
+  Repo -> DB: UPDATE bookings SET status='returned' WHERE id=?
+  Repo -> DB: UPDATE cars SET odometer=? WHERE id=?
+  DB --> Repo: транзакция выполнена (OK)
+  Repo --> C: true
+  C --> B: 302 Location: /manager/rentals (сообщение «Автомобиль принят»)
+else ошибка пробега или неверный статус
+  C --> B: 422 / 403 Ошибка валидации или доступа
+end
+
+deactivate C
+B --> Manager: Обновлённый список аренд с итоговой суммой
+@enduml

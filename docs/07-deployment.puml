@@ -1,0 +1,20 @@
+﻿@startuml
+title car_rental: Диаграмма развёртывания
+
+node "Компьютер пользователя" as pc {
+  artifact "Браузер\n(Chrome / Firefox / Edge)" as browser
+}
+
+node "XAMPP Server (Localhost)" as server {
+  node "Apache HTTP Server" as apache {
+  }
+  node "PHP 8.2 Runtime" as php {
+    artifact "public/index.php\n(Front Controller)" as app
+  }
+  database "MariaDB 10.4+\n(car_rental, utf8mb4)" as db
+}
+
+browser --> apache : HTTP / HTTPS (Порт 80)
+apache --> php : обработка скриптов
+php --> db : PDO MySQL (127.0.0.1:3306)
+@enduml

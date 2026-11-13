@@ -1,0 +1,33 @@
+﻿@startuml
+skinparam componentStyle uml2
+title car_rental: Диаграмма компонентов (MVC и трёхзвенная архитектура)
+
+node "Браузер клиента / менеджера" {
+  [HTML5 / CSS3 (Bootstrap 5.3)] as UI
+  [app.js (валидация и расчёт дат)] as JS
+}
+
+package "Сервер приложения car_rental (PHP 8.2)" {
+  [public/index.php\nFront Controller] as FC
+  [Core\n(Router, Database, View,\nSession, Csrf, Auth, Validator)] as Core
+  [Controllers\n(Auth, Car, Booking, Rental)] as Ctrl
+  [Repositories\n(User, Car, Tariff, Booking, Rental)] as Repo
+  [views/ (HTML-шаблоны)] as Views
+}
+
+database "MySQL / MariaDB\n(car_rental, utf8mb4)" as DB
+
+interface "HTTP / HTTPS" as HTTP
+
+UI ..> HTTP
+JS ..> HTTP
+HTTP -- FC
+
+FC --> Core
+FC --> Ctrl
+Ctrl --> Core
+Ctrl --> Repo
+Ctrl --> Views
+Repo --> Core : PDO
+Core --> DB : SQL (Prepared Statements)
+@enduml
