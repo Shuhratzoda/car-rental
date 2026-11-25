@@ -1,7 +1,7 @@
 <h2 class="reveal">Мошинҳо <small class="muted">(<?= (int)$total ?> сабт)</small></h2>
 
-<form class="panel reveal fgrid" method="get">
-  <input type="search" name="q" placeholder="Ҷустуҷӯ (бренд, модел)" value="<?= e($filters['q']) ?>">
+<form class="panel reveal fgrid" method="get" action="/cars">
+  <input type="search" name="q" data-live-search placeholder="Ҷустуҷӯи фаврӣ (бренд, модел)" value="<?= e($filters['q']) ?>" autocomplete="off">
   <select name="tariff_id">
     <option value="">Ҳамаи тарифҳо</option>
     <?php foreach ($tariffs as $t): ?>
@@ -19,7 +19,10 @@
   <?php endif; ?>
 </form>
 
-<div class="list">
+<!-- Натиҷаҳои ҷустуҷӯи фаврӣ (JS) -->
+<div data-live-results class="reveal"></div>
+
+<div class="list" id="cars-list">
 <?php foreach ($items as $c): ?>
   <div class="item reveal">
     <div>
@@ -30,6 +33,9 @@
     <div>
       <?php if ($user && $user['role']==='admin'): ?>
         <a class="btn sm ghost" href="/cars/<?= (int)$c['id'] ?>/edit">Таҳрир</a>
+        <form method="post" action="/cars/<?= (int)$c['id'] ?>/delete" style="display:inline">
+          <button type="submit" class="btn sm ghost" data-confirm="Мошин «<?= e($c['brand'] . ' ' . $c['model']) ?>»-ро нест мекунед?">Нест</button>
+        </form>
       <?php endif; ?>
     </div>
   </div>

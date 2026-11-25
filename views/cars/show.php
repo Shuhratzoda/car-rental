@@ -15,8 +15,8 @@
   <div class="panel reveal">
     <?php if ($user && $user['role'] === 'admin'): ?>
       <a class="btn" href="/cars/<?= (int)$car['id'] ?>/edit">Таҳрир</a>
-      <form method="post" action="/cars/<?= (int)$car['id'] ?>/delete" style="display:inline" onsubmit="return confirm('Мошинро нест мекунед?')">
-        <button class="btn ghost" type="submit">Нест кардан</button>
+      <form method="post" action="/cars/<?= (int)$car['id'] ?>/delete" style="display:inline">
+        <button type="submit" class="btn ghost" data-confirm="Мошин «<?= e($car['brand'] . ' ' . $car['model']) ?>»-ро нест мекунед? Ин амал бебозгашт аст.">Нест кардан</button>
       </form>
     <?php endif; ?>
     <a class="btn ghost" href="/cars">Ба рӯйхат</a>

@@ -40,6 +40,19 @@
     <?= $content ?>
 </main>
 
-<script src="/assets/app.js"></script>
+<!-- Модали тасдиқи нест кардан (Lab 11) -->
+<div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <h3 data-modal-title>Тасдиқ</h3>
+    <p data-modal-body>Шумо мутмаин ҳастед?</p>
+    <div class="row">
+      <button type="button" class="btn ghost" data-modal-cancel>Бекор</button>
+      <button type="button" class="btn" data-modal-ok>Тасдиқ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ES-модул: пас аз таҳлили HTML иҷро мешавад (мисли defer) -->
+<script type="module" src="/assets/js/app.js"></script>
 </body>
 </html>

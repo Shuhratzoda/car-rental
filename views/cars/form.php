@@ -1,13 +1,13 @@
 <h2 class="reveal"><?= e($title) ?></h2>
 
-<form class="panel reveal" method="post" action="<?= $id ? '/cars/' . $id . '/edit' : '/cars/create' ?>">
+<form class="panel reveal" method="post" action="<?= $id ? '/cars/' . $id . '/edit' : '/cars/create' ?>" data-validate>
   <?php
     $fields = [
-      'brand' => ['label' => 'Бренд', 'type' => 'text', 'required' => true],
-      'model' => ['label' => 'Модел', 'type' => 'text', 'required' => true],
-      'year'  => ['label' => 'Сол', 'type' => 'number', 'required' => true],
-      'price_day' => ['label' => 'Нарх / рӯз ($)', 'type' => 'number', 'step' => '0.01', 'required' => true],
-      'odometer' => ['label' => 'Одометр (км)', 'type' => 'number'],
+      'brand' => ['label' => 'Бренд', 'type' => 'text', 'required' => true, 'maxlength' => 50],
+      'model' => ['label' => 'Модел', 'type' => 'text', 'required' => true, 'maxlength' => 50],
+      'year'  => ['label' => 'Сол', 'type' => 'number', 'required' => true, 'min' => 1990, 'max' => date('Y')+1],
+      'price_day' => ['label' => 'Нарх / рӯз ($)', 'type' => 'number', 'step' => '0.01', 'required' => true, 'min' => 1],
+      'odometer' => ['label' => 'Одометр (км)', 'type' => 'number', 'min' => 0],
       'image' => ['label' => 'URL-и расм', 'type' => 'url'],
     ];
   ?>
@@ -20,6 +20,9 @@
         value="<?= e((string)($data[$name] ?? '')) ?>"
         <?= !empty($f['required']) ? 'required' : '' ?>
         <?= isset($f['step']) ? 'step="' . e($f['step']) . '"' : '' ?>
+        <?= isset($f['min']) ? 'min="' . e((string)$f['min']) . '"' : '' ?>
+        <?= isset($f['max']) ? 'max="' . e((string)$f['max']) . '"' : '' ?>
+        <?= isset($f['maxlength']) ? 'maxlength="' . (int)$f['maxlength'] . '"' : '' ?>
       >
       <?php if (!empty($errors[$name])): ?>
         <small class="err"><?= e($errors[$name]) ?></small>
