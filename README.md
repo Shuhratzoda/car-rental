@@ -1,19 +1,57 @@
-﻿# Информационная система проката автомобилей (Car Rental IS)
+# AutoRent — Кори лабораторӣ 13
 
-**Тема проекта:** Информационная система проката автомобилей (`car_rental`)  
-**Автор:** Шӯҳратзода Довуд  
-**Группа:** 3-й курс, ИТ  
-**Стек технологий:** PHP 8.2+ (собственный мини-MVC), MySQL / MariaDB (`utf8mb4`), HTML5, CSS3, Bootstrap 5.3, JavaScript.
+**PDO + Репозиторийҳо + CRUD + ҷустуҷӯ/филтр/саҳифабандӣ + JOIN + PRG + валидатсия**
 
-## Структура репозитория (Лабораторные работы 1–7)
-- `docs/01-domain-analysis.md` — Лабораторная работа 1: Анализ предметной области
-- `docs/02-comparison-matrix.md` — Лабораторная работа 2: Сравнительная матрица аналогов
-- `docs/03-short-spec.md` — Лабораторная работа 3: Краткое техническое задание (ТЗ, User Stories, MoSCoW)
-- `docs/04-behavior/` — Лабораторная работа 4: UML-модель поведения (`use-case.puml`, `activity-rental.puml`, `sequence-rental.puml`)
-- `docs/05-structure/` — Лабораторная работа 5: UML-модель структуры (`class.puml`, `component.puml`)
-- `docs/06-logical-model.md` — Лабораторная работа 6: Логическая модель БД и нормализация до ЗНФ
-- `docs/06-er-diagram.puml` — Лабораторная работа 6: ER-диаграмма
-- `database/schema.sql` — Лабораторная работа 7: Физическая схема БД (`car_rental`)
-- `database/seed.sql` — Лабораторная работа 7: Тестовые данные
-- `database/queries.sql` — Лабораторная работа 7: Контрольные SQL-запросы
-- `docs/07-deployment.puml` — Лабораторная работа 7: Диаграмма развёртывания
+Лоиҳаи иҷораи мошин (car_rental), ки мувофиқи талаботи Кори лабораторӣ 13 сохта шудааст (намунаи university_hr ба мавзӯи AutoRent мутобиқ карда шудааст).
+
+## Насб
+
+1. Файлуҳоро ба `C:\xampp\htdocs\autorent` (ё ҷои дигар) гузоред.
+2. Дар phpMyAdmin файли `database/schema.sql`-ро Import кунед.
+3. `cp config/config.example.php config/config.php` ва агар лозим бошад паролро иваз кунед.
+4. DocumentRoot-ро ба папкаи **`public/`** нишон диҳед (ё Apache Alias).
+5. Кушоед: `http://localhost/autorent/` (ё мувофиқи танзимот).
+
+### Корбарони демо (рамз: `password`)
+
+| E-mail            | Нақш    |
+|-------------------|---------|
+| admin@rent.tj     | admin   |
+| manager@rent.tj   | manager |
+| client@rent.tj    | client  |
+
+## Сохтор
+
+```
+config/          — конфигуратсия (example + config.php дар .gitignore)
+database/        — schema.sql
+public/          — нуқтаи вуруд (index.php) + assets + .htaccess
+src/
+  Core/          — Database, Router, View, Validator, helpers
+  Controllers/   — Home, Auth, Car, Booking, Manager, Report
+  Repositories/  — Car, Booking, Tariff, User, Rental
+views/           — шаблонҳо
+docs/13-checks.md
+```
+
+## Имкониятҳои Lab-13
+
+- Пайвастшавии PDO бо `utf8mb4`, истисноҳо, конфиг берун аз Git
+- Ҳамаи дархостҳо бо prepared statements
+- CRUD-и мошинҳо бо валидатсияи серверӣ ва PRG
+- Ҷустуҷӯ, филтр (тариф/статус), саҳифабандӣ
+- JOIN (cars + tariffs)
+- Ҳисоботи даромад
+- Репозиторийҳо ва рӯйхати сафед барои майдонҳо
+
+## Меъёрҳои баҳогузорӣ (мувофиқи PDF)
+
+| Меъёр                                      | Хол |
+|--------------------------------------------|-----|
+| PDO, конфиг, коркарди хатоҳо               | 1   |
+| Prepared statements, ҳимоя аз инъексия     | 2   |
+| CRUD + PRG + валидатсия                    | 2   |
+| Ҷустуҷӯ, филтр, саҳифабандӣ, JOIN, ҳисобот | 2   |
+| docs/13-checks.md, тег lab-13              | 1   |
+| Ҳимоя                                      | 2   |
+| **Ҳамагӣ**                                 | **10** |
